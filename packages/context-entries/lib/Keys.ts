@@ -32,6 +32,16 @@ export const KeysHttp = {
    * Include credentials flags.
    */
   includeCredentials: new ActionContextKey<boolean>('@comunica/bus-http:include-credentials'),
+
+  /**
+   * Share-VDE RDFizer mapping code.
+   */
+  svdeMappingCode: new ActionContextKey<string>('svde-mapping'),
+
+  /**
+   * Share-VDE provenance-based filtering context.
+   */
+  svdeProvenances: new ActionContextKey<string>('svde-provenances'),
   /**
    * Authentication for a source as a "username:password"-pair.
    */

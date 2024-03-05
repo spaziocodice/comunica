@@ -6,7 +6,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import * as querystring from 'querystring';
 import type { Writable } from 'stream';
 import * as url from 'url';
-import { KeysQueryOperation } from '@comunica/context-entries';
+import { KeysHttp, KeysQueryOperation } from '@comunica/context-entries';
 import { ActionContext } from '@comunica/core';
 import type { ICliArgsHandler, QueryQuads, QueryType } from '@comunica/types';
 import type * as RDF from '@rdfjs/types';
@@ -442,6 +442,15 @@ export class HttpServiceSparqlEndpoint {
     };
     if (readOnly) {
       context = { ...context, [KeysQueryOperation.readOnly.name]: readOnly };
+    }
+
+    if (request.headers && request.headers[KeysHttp.svdeMappingCode.name] !== undefined) {
+      const mapCode = request.headers[KeysHttp.svdeMappingCode.name];
+      context = { ...context, [KeysHttp.svdeMappingCode.name]: mapCode };
+    }
+    if (request.headers && request.headers[KeysHttp.svdeProvenances.name] !== undefined) {
+      const provenances = request.headers[KeysHttp.svdeProvenances.name];
+      context = { ...context, [KeysHttp.svdeProvenances.name]: provenances };
     }
 
     let result: QueryType;
