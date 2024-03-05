@@ -98,6 +98,20 @@ export class ActorHttpFetch extends ActorHttp {
     if (!action.init.headers.has('user-agent')) {
       action.init.headers.append('user-agent', this.userAgent);
     }
+
+    if (!action.init.headers.has(KeysHttp.svdeMappingCode.name)) {
+      const mappingCode = action.context.get(KeysHttp.svdeMappingCode);
+      if (mappingCode !== undefined) {
+        action.init.headers.set(KeysHttp.svdeMappingCode.name, <string>mappingCode);
+      }
+    }
+    if (!action.init.headers.has(KeysHttp.svdeProvenances.name)) {
+      const provenances = action.context.get(KeysHttp.svdeProvenances);
+      if (provenances !== undefined) {
+        action.init.headers.set(KeysHttp.svdeProvenances.name, <string>provenances);
+      }
+    }
+
     const authString: string | undefined = action.context.get(KeysHttp.auth);
     if (authString) {
       action.init.headers.append('Authorization', `Basic ${Buffer.from(authString).toString('base64')}`);
@@ -117,7 +131,6 @@ export class ActorHttpFetch extends ActorHttp {
     }
 
     let requestInit = { ...action.init };
-
     if (action.context.get(KeysHttp.includeCredentials)) {
       requestInit.credentials = 'include';
     }
